@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from waitlist.views import sign_up_for_waitlist, get_semesters, get_sessions, get_subject, get_students_waitlist, pin_recovery
+from waitlist import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,3 +28,4 @@ urlpatterns = [
 
 
 ]
+

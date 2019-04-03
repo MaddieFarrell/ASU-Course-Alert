@@ -49,17 +49,11 @@ def get_subject(request):
 @csrf_exempt
 def get_students_waitlist(request):
 	if request.method == 'GET':
-		students_waitlist = WaitingStudent.objects.filter(email=email, course=course)
-		for email in students_waitlist:
+		email = request.GET.get('email', ' ')
+		if StudentPin.objects.filter(email=email).exists():
 			if email == pin:
-				return HttpResponse(students_waitlist)
-			return("Error")
-
-
-		
-		return HttpResponse(response)
-	return HttpResponse("Please enter your 4 digit pin number")
-
+			return HttpResponse(students_waitlist)
+		return("Error")
 
 @csrf_exempt
 def pin_recovery(request):
