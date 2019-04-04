@@ -52,7 +52,7 @@ def get_students_waitlist(request):
 		email = request.GET.get('email', ' ')
 		if StudentPin.objects.filter(email=email).exists():
 			if email == pin:
-			return HttpResponse(students_waitlist)
+				return HttpResponse(students_waitlist)
 		return("Error")
 
 @csrf_exempt
@@ -60,6 +60,9 @@ def pin_recovery(request):
 	if request.method == 'POST':
 		return HttpResponse("Your pin number is %s." % pin)
 #TODO: send pin to the email
+@csrf_exempt
+def empty_view(request):
+    return HttpResponse("Empty View")
 
 
 
