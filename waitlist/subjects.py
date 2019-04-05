@@ -1,0 +1,1 @@
+subjects = ["AEE", "ACO", "BIO", "BME", "CIS", "CS", "CHE", "EEE", "EET", "GIT", "IFT", "JMC", "MAE", "MCB", "NEU", "PHI" "PHY", "SCM", "SER", "UET" ]

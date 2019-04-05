@@ -26,7 +26,7 @@ urlpatterns = [
     path('subject/', views.get_subject, name= 'get_subject'),
     path('waitlist/', views.get_students_waitlist, name='get_students_waitlist'),
     path('recovery/', views.pin_recovery, name='pin_recovery'),
-    path('', views.empty_view, name='empty_view'),
+ 
 
 
 ]

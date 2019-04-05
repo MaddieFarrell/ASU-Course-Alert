@@ -27,3 +27,7 @@ class WaitingStudent(models.Model):
 class Semester(models.Model):
 	semester = models.CharField(max_length=6)
 	semester_number = models.IntegerField(max_length=6)
+
+
+
+
