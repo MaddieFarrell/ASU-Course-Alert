@@ -16,7 +16,7 @@ def sign_up_for_waitlist(request):
 	if request.method == "POST":
 		json_data == json.loads(request.body) 
 		email = json["email"]
-		studentPin = studentPin.objects.get(email=email)
+		studentPin = StudentPin.objects.get(email=email)
 		if student_pin.pin == json_data["pin"]:
 			student_waitlist = Course.objects.create(
 				semester=json_data["semester"],
@@ -37,7 +37,7 @@ def get_semesters(request):
 		semesters = Semester.objects.all() 
 		qs_json = serializers.serialize("json", semesters) 
 		return HttpResponse(qs_json)
-	return("Error")
+	return HttpResponse("Error")
 
 
 @csrf_exempt
@@ -46,7 +46,7 @@ def get_sessions(request):
 		sessions = ["A", "B", "C", "DYN"] 
 		qs_json = serializers.serialize("json", sessions)
 		return HttpResponse(qs_json) 
-	return("Error")
+	return HttpResponse("Error")
 
 
 @csrf_exempt
@@ -54,7 +54,7 @@ def get_subject(request):
 	if request.method == "GET":
 		qs_json = serializers.serialize("json", subjects)	
 		return HttpResponse(qs_json)
-	return("Error")
+	return HttpResponse("Error")
 
 
 @csrf_exempt
@@ -64,11 +64,11 @@ def get_students_waitlist(request):
 		pin = request.GET.get("pin", '')
 		if StudentPin.objects.get(email=email, pin=pin).exists():
 			student_courses = []
-			for courses in WaitingStudent.objects.filter(email=email):
+			for courses in WaitingStudent.objects.filter(email=email, sent=False):
 				student_courses.append(courses)
 				return HttpResponse(student_courses)
-		return("Please Enter your correct pin number")
-	return("Error")
+		return HttpResponse("Please Enter your correct pin number")
+	return HttpResponse("Error")
 
 @csrf_exempt
 def pin_recovery(request):
