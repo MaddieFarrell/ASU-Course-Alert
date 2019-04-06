@@ -14,24 +14,45 @@ import json
 @csrf_exempt
 def sign_up_for_waitlist(request):
 	if request.method == "POST":
-		json_data == json.loads(request.body) 
+		json_date = json.loads(request.body)
 		email = json["email"]
 		pin = json["pin"]
-		studentPin = StudentPin.objects.get(email=email, pin=pin)
+		student_pin = StudentPin.objects.get(email = email)
 		if student_pin.exists():
-			return HttpResponse("You already have an account set up")
+			if student_pin.pin == json_data["pin"]:
+				course = Course.objects.get(semester=json_data["semester"], subject_name=json_data["subject_name"], subject_number=json_data["subject_number"], session=json_data["session"],):
+					if course.exists():
+						qs_json = serializers.serialize("json", course)
+							return(qs_json)
+					else:
+						created_course = Cousrse.objects.create(
+							semester=json_data["semester"],
+							subject_name=json_data["subject_name"],
+							subject_number=json_data["subject_number"],
+							session=json_data["session"],
+							)
+							qs_json = serializers.serialize("json", created_course)
+								return HttpResponse(qs_json)
+			return HttpResponse("Error! Please enter the correct pin number")
 		else:
-			student_waitlist = Course.objects.create(
-				semester=json_data["semester"],
-				subject_name=json_data["subject_name"],
-				subject_number=json_data["subject_number"],
-				session=json_data["session"],
-				email=json_data["email"],
-				pin=json_data["pin"],
-			)
-			qs_json = serializers.serialize("json", student_waitlist) 
-			return HttpResponse(qs_json) 
-	return HttpResponse("Error") 
+			create_student_pin = StudentPin.objects.create(
+				email = json_data["email"],
+				pin = json_date["email"],
+				)
+			course = Course.objects.get(semester=json_data["semester"], subject_name=json_data["subject_name"], subject_number=json_data["subject_number"], session=json_data["session"],):
+				if course.exists():
+					qs_json = serializers.serialize("json", course)
+						return HttpResponse(qs_json)
+				else:
+				created_course = Course.objects.create(
+					semester=json_data["semester"],
+					subject_name=json_data["subject_name"],
+					subject_number=json_data["subject_number"],
+					session=json_data["session"],
+					)
+					qs_json = serializers.serialize("json", created_course)
+						return HttpResponse(qs_json)
+	return HttpResponse("Error")
 
 
 @csrf_exempt
@@ -63,12 +84,12 @@ def get_subject(request):
 @csrf_exempt
 def get_students_waitlist(request):
 	if request.method == "GET":
-		email = request.GET.get("email", "")
+		email = request.GET.get("email", "")#url that they pass in, we extract the email and pin from the url
 		pin = request.GET.get("pin", "")
 		if StudentPin.objects.get(email=email, pin=pin).exists():
 			student_courses = []
-			for courses in WaitingStudent.objects.filter(email=email, sent=False):
-				student_courses.append(courses)
+			for row in WaitingStudent.objects.filter(email=email, sent=False): # grab rows that match the case, double for loop
+				student_courses.append(row.course) # only added 1 class
 				qs_json = serializers.serialize("json", student_courses)
 				return HttpResponse(qs_json)
 		return HttpResponse("Please Enter your correct pin number and email")
